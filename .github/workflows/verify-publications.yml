@@ -1,0 +1,17 @@
+name: Verify publications
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  quartic-bpr-routing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Replay exact certificate
+        run: python3 projects/quartic-bpr-routing/verification/verify.py

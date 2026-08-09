@@ -1,0 +1,25 @@
+schema_version: 1
+id: quartic-bpr-routing
+title: An Exact Counterexample to Affine-Like Price-of-Anarchy Shape in Quartic BPR Routing
+status: preprint
+released_on: 2026-08-09
+
+domains:
+  - computer-science-and-game-theory
+  - optimization-and-control
+
+arxiv:
+  primary_category: cs.GT
+  cross_list:
+    - math.OC
+  identifier: null
+
+supplement:
+  title: Reproducibility Supplement for "An Exact Counterexample to Affine-Like Price-of-Anarchy Shape in Quartic BPR Routing"
+  version: 1.0.0
+  doi: 10.5281/zenodo.21864490
+  resource_type: software
+
+verification:
+  command: python3 projects/quartic-bpr-routing/verification/verify.py
+  arithmetic: exact-rational
