@@ -1,0 +1,23 @@
+schema_version: 1
+id: ramsey-k2n
+title: Five Exact Ramsey Numbers for Pairs of Complete Bipartite Graphs
+status: published-record
+released_on: 2026-08-10
+
+domains:
+  - combinatorics
+
+arxiv:
+  primary_category: math.CO
+  cross_list: []
+  identifier: null
+
+publication:
+  title: Five Exact Ramsey Numbers for Pairs of Complete Bipartite Graphs
+  version: 1.0.0
+  doi: 10.5281/zenodo.21878986
+  resource_type: publication
+
+verification:
+  command: python3 projects/ramsey-k2n/verification/verify.py
+  arithmetic: exact-integer
