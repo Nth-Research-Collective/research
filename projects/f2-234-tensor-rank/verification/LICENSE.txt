@@ -1,0 +1,22 @@
+Creative Commons Attribution 4.0 International (CC BY 4.0)
+
+Copyright (c) 2026 Ian D'Ambrosio, Nth Research Collective.
+
+This archive (the paper, the verifier and evaluator code, the proof
+certificates, and the documentation authored for this result) is licensed under
+the Creative Commons Attribution 4.0 International License. You are free to
+share and adapt the material for any purpose, provided you give appropriate
+credit. The full license text is available at
+https://creativecommons.org/licenses/by/4.0/legalcode .
+
+Third-party inputs are not redistributed in this archive. They are downloaded
+at replay time from their pinned upstream locations and remain under their own
+licenses:
+
+- Google DeepMind AlphaTensor F2 factorizations (Apache License 2.0). The
+  tracked file knowledge/data/f2_234_rank20_alphatensor.json is a reindexed
+  factual extract of one decomposition and records its upstream provenance.
+- Wang, tensor-rank-lower-bound verifier and its n324 certificate payloads
+  (see that repository for its license).
+- marijnheule/drat-trim (drat-trim.c, lrat-check.c), used under its upstream
+  license.

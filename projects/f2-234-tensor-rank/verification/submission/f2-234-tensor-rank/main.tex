@@ -1,0 +1,480 @@
+\documentclass[10pt]{article}
+
+\usepackage[margin=0.8in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xurl}
+\emergencystretch=2em
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\F}{\mathbb F}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\GL}{\operatorname{GL}}
+
+\hypersetup{
+  pdftitle={The Exact F2-Rank of 2x3 by 3x4 Matrix Multiplication},
+  pdfauthor={Ian D'Ambrosio}
+}
+
+\title{The Exact $\F_2$-Rank of $2\times3$ by $3\times4$\
+Matrix Multiplication}
+\author{Ian D'Ambrosio\\
+\small Nth Research Collective\\
+\small \texttt{ian@nthresearch.org}}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Hopcroft and Kerr gave a 20-multiplication algorithm for multiplying a
+$2\times3$ matrix by a $3\times4$ matrix, and conjectured that 20
+multiplications are necessary.  Over $\F_2$, Wang recently proved the lower
+bound 19 with a machine-checkable substitution certificate, leaving the exact
+rank in $\{19,20\}$.  We prove that the rank is 20.  Wang's checked
+first-factor capacities imply that every hypothetical 19-term decomposition
+has pairwise distinct first factors and at most one first factor of rank two.  A
+checked CNF/DRAT/LRAT certificate and exhaustive enumeration reduce all such
+supports to 252 profiles in four symmetry orbits.  Row restrictions then
+exclude the four orbits.  Tight 12-term restrictions force output factors into
+a four-dimensional row space; 13-term restrictions have a unique relation
+whose quotient factors are all equal.  These facts immediately exclude the
+all-rank-one profiles of types $(7,7,5)$ and $(7,6,6)$.  In the remaining
+profile, with type $(6,6,6)$ and one rank-two factor, the three relations would
+need at least 18 support incidences but can contain at most 9.  An explicit
+20-term decomposition is checked against all 576 tensor coefficients.  The
+profile proof, restriction certificate, upper witness, and replay commands are
+provided as exact artifacts.
+\end{abstract}
+
+\noindent\textbf{Keywords.}
+bilinear complexity; tensor rank; matrix multiplication; finite fields;
+computer-assisted proof
+
+\section{Introduction}
+
+Let $R_{\F}(\langle m,n,p\rangle)$ denote the tensor rank over $\F$ of
+multiplying an $m\times n$ matrix by an $n\times p$ matrix.  Equivalently, it
+is the least number of scalar multiplications in a bilinear algorithm for this
+map.  Exact ranks for small rectangular formats are basic finite problems in
+algebraic complexity, but even tiny cases can depend on the ground field and
+resist both general lower bounds and constructive search
+\cite{Blaser2003,Smirnov2013}.
+
+For $\langle2,3,4\rangle$, Hopcroft and Kerr gave an algorithm using 20
+multiplications and conjectured that 20 are necessary
+\cite{HopcroftKerr1971}.  Smirnov's later table distinguishes an exact upper
+bound 20 from an approximate bound 19 \cite{Smirnov2013}.  AlphaTensor also
+found an exact rank-20 decomposition over $\F_2$ \cite{FawziEtAl2022}.
+Wang's automated finite-field framework recently supplied the first checked
+lower bound
+\[
+ R_{\F_2}(\langle2,3,4\rangle)\geq19,
+\]
+while retaining 20 as the upper bound \cite{Wang2026}.  Thus only one exact
+case remained.
+
+\begin{theorem}\label{thm:main}
+The bilinear complexity over $\F_2$ of multiplying a $2\times3$ matrix by a
+$3\times4$ matrix is
+\[
+ R_{\F_2}(\langle2,3,4\rangle)=20.
+\]
+\end{theorem}
+
+The lower-bound proof has a certified finite front end and a short structural
+back end.  Wang's substitution bounds reduce any hypothetical rank-19
+decomposition to four orbits of possible first-factor supports.  We then use
+the three nonzero row restrictions of $\F_2^2$.  A restriction has flattening
+rank 12.  With 12 surviving terms it is tight and rigid; with 13 terms it has
+exactly one relation.  The resulting contradictions depend only on the orbit's
+row multiplicities, so no search over the remaining two factors is needed.
+
+\paragraph{Contribution and scope.}
+The result closes this exact $\F_2$ format and supplies a new restriction-based
+exclusion of rank 19.  The argument uses the special three-direction geometry
+of $\F_2^2$ and does not claim a general rank formula for
+$\langle2,3,p\rangle$ or for other fields.  Searches over flip graphs and
+fixed-profile SAT instances were useful diagnostics but play no role in the
+proof.
+
+\section{Tensor conventions and row restrictions}
+
+Put
+\[
+ A=\F_2^2,\qquad B=\F_2^3,\qquad C=\F_2^4.
+\]
+Using the standard bases to identify coordinate spaces with their duals, the
+matrix-multiplication tensor is
+\begin{equation}\label{eq:tensor}
+ M_{2,3,4}
+ =\sum_{i=1}^{2}\sum_{j=1}^{3}\sum_{k=1}^{4}
+   a_{ij}\otimes b_{jk}\otimes c_{ik}
+ \in (A\otimes B)\otimes(B\otimes C)\otimes(A\otimes C).
+\end{equation}
+Suppose, toward a contradiction, that
+\begin{equation}\label{eq:rank19}
+ M_{2,3,4}=\sum_{s=1}^{19}U_s\otimes V_s\otimes W_s,
+\end{equation}
+where every factor is nonzero.  Regard $U_s$ as a $2\times3$ binary matrix.
+
+For $x\in A\setminus\{0\}$, restrict the left input to matrices $xy^{\mathsf
+T}$ with $y\in B$.  Define
+\[
+ H_x=x\otimes C\subseteq A\otimes C,
+ \qquad R_x=B\otimes H_x.
+\]
+The restricted target is
+\begin{equation}\label{eq:restricted}
+ T_x=\sum_{j=1}^{3}\sum_{k=1}^{4}
+ e_j\otimes E_{jk}\otimes(x\otimes f_k).
+\end{equation}
+Its flattening with $B\otimes C$ on one side has rank 12 and image exactly
+$R_x$.  Moreover,
+\begin{equation}\label{eq:intersection}
+ H_x\cap H_y=\{0\}\qquad(x\neq y,
+ \ x,y\in A\setminus\{0\}).
+\end{equation}
+
+If $U_s=a_sb_s^{\mathsf T}$ has rank one, then term $s$ survives restriction
+$x$ exactly when $a_s\mathbin{\cdot}x=1$, and its second flattening factor is
+\begin{equation}\label{eq:q-rank1}
+ q_{s,x}=b_s\otimes W_s.
+\end{equation}
+If $U_*$ has rank two, it survives all three nonzero restrictions and
+\begin{equation}\label{eq:q-rank2}
+ q_{*,x}=(x^{\mathsf T}U_*)\otimes W_*.
+\end{equation}
+The first factor in \eqref{eq:q-rank2} is nonzero because $U_*$ has full row
+rank.
+
+\section{Two flattening lemmas}
+
+\begin{lemma}[Tight restriction]\label{lem:tight}
+If $T_x$ is expressed by exactly 12 active terms from
+\eqref{eq:rank19}, then the active $V_s$ form a basis of $B\otimes C$ and the
+active $q_{s,x}$ form a basis of $R_x$.  In particular, every active rank-one
+term satisfies $W_s\in H_x$.
+\end{lemma}
+
+\begin{proof}
+A rank-12 matrix written as a sum of 12 dyads forces both factor lists to have
+rank 12.  Hence the $q_{s,x}$ span, and therefore belong to, the flattening
+image $R_x$.  If $b_s\otimes W_s\in B\otimes H_x$ with $b_s\neq0$, apply a
+functional taking $b_s$ to 1 to obtain $W_s\in H_x$.
+\end{proof}
+
+\begin{lemma}[One-excess restriction]\label{lem:excess}
+Suppose that $T_x$ is expressed by 13 active terms, indexed by $I$.  Let
+\[
+ L_x:\F_2^I\longrightarrow B\otimes C,
+ \qquad e_s\longmapsto V_s.
+\]
+Then $L_x$ is surjective and
+$\ker L_x=\langle\lambda^x\rangle$ is one-dimensional.  If
+\[
+ \pi_x:B\otimes(A\otimes C)\longrightarrow
+ \bigl(B\otimes(A\otimes C)\bigr)/R_x
+\]
+is the quotient map, there is a quotient vector $z_x$ such that
+\begin{equation}\label{eq:quotient-relation}
+ \pi_x(q_{s,x})=\lambda_s^x z_x\qquad(s\in I).
+\end{equation}
+\end{lemma}
+
+\begin{proof}
+The active $V_s$ span 12 dimensions because the restricted flattening has rank
+12; their ambient space also has dimension 12.  Thus $L_x$ is surjective and
+has a one-dimensional kernel.  Projecting the target outside $R_x$ gives
+\[
+ \sum_{s\in I}V_s\otimes\pi_x(q_{s,x})=0.
+\]
+Equivalently, the tensor
+$\sum_{s\in I}e_s\otimes\pi_x(q_{s,x})$ belongs to
+$\ker L_x\otimes\bigl((B\otimes(A\otimes C))/R_x\bigr)$.  Since the first
+factor is spanned by $\lambda^x$, equation
+\eqref{eq:quotient-relation} follows.
+\end{proof}
+
+We will also use that over $\F_2$, equality of nonzero pure tensors
+$b\otimes h=b'\otimes h'$ forces $b=b'$ and $h=h'$.  Over a general field the
+factors are proportional; $\F_2$ has only one nonzero scalar.
+
+\section{The certified first-factor profiles}
+
+Wang's substitution certificate supplies a checked residual lower bound
+$L(S)$ for each relevant subspace $S$ of the first tensor factor.  The bound
+applies after restricting the left input to the annihilator $S^\perp$, which
+kills exactly the terms whose first factor belongs to $S$.  If $m(S)$ terms of
+a rank-19 decomposition have $U_s\in S$, substitution gives the capacity
+inequality
+\begin{equation}\label{eq:capacity}
+ m(S)+L(S)\leq19.
+\end{equation}
+For every one-dimensional $S$, the checked residual bound is 18.  Since a
+one-dimensional binary subspace has one nonzero vector, every nonzero first
+factor therefore occurs at most once.
+
+The profile certificate expands Wang's orbit data to all first-factor
+subspaces and retains the 1,897 nontrivial inequalities
+\eqref{eq:capacity}.  There are 21 nonzero $2\times3$ matrices of rank one and
+42 of rank two.  A 62,267-variable CNF asserts all capacities, cardinality 19,
+and at least two selected rank-two matrices.  Its 124,027 clauses are
+unsatisfiable; both its DRAT and LRAT proofs check.  Exhaustive enumeration of
+the remaining zero- or one-rank-two candidates checks 56,070 supports and
+retains exactly 252.  Quotienting by
+$\GL(2,2)\times\GL(3,2)$, of order 1,008, gives the following complete list.
+
+\begin{proposition}[Checked profile classification]\label{prop:profiles}
+The first factors in any rank-19 decomposition \eqref{eq:rank19} are pairwise
+distinct, at most one has matrix rank two, and their support belongs to one of
+the four orbits in Table~\ref{tab:profiles}.
+\end{proposition}
+
+\begin{table}[ht]
+\centering
+\caption{The four certified first-factor support orbits.  The type records the
+multiplicities of the three nonzero row directions among rank-one factors.}
+\label{tab:profiles}
+\begin{tabular}{@{}cccl@{}}
+\toprule
+orbit & size & type & rank-two factors \\
+\midrule
+0 & 63  & $(7,7,5)$ & none \\
+1 & 21  & $(7,6,6)$ & none \\
+2 & 126 & $(7,6,6)$ & none \\
+3 & 42  & $(6,6,6)$ & one \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The CNF, proof traces, enumeration, group action, and orbit representatives are
+reconstructed by the verifier described in Section~\ref{sec:verification}.
+Proposition~\ref{prop:profiles} is the only computer-assisted classification
+used below.
+
+\section{Excluding the four profiles}
+
+\subsection{\texorpdfstring{Type $(7,7,5)$}{Type (7,7,5)}}
+
+Two row directions occur seven times.  Restricting against the annihilator of
+either direction removes those seven terms and leaves exactly 12.  By
+Lemma~\ref{lem:tight}, every active output factor lies in the corresponding
+$H_x$.  The two active sets overlap in the five terms from the deficient row
+direction.  Their nonzero output factors would lie in
+$H_x\cap H_y=\{0\}$, a contradiction.  Orbit 0 is impossible.
+
+\subsection{\texorpdfstring{Type $(7,6,6)$}{Type (7,6,6)}}
+
+Let $a_0$ be the multiplicity-seven direction and let $a_1,a_2$ be the other
+two.  Restriction against the annihilator $x_0$ of $a_0$ leaves the 12 terms in
+the $a_1$ and $a_2$ groups.  Lemma~\ref{lem:tight} puts all their output
+factors in $H_{x_0}$.
+
+Now restrict against the annihilator $x_1$ of $a_1$.  The seven $a_0$ terms
+and six $a_2$ terms survive, so Lemma~\ref{lem:excess} applies.  For each of
+the six $a_2$ terms, $W_s\in H_{x_0}$, and projection modulo $H_{x_1}$ is
+injective on $H_{x_0}$ by \eqref{eq:intersection}.  Its quotient pure tensor
+is therefore nonzero.  Equation~\eqref{eq:quotient-relation} forces all six
+relevant relation coefficients to be 1 and all six quotient pure tensors to
+equal the same nonzero $z_{x_1}$.  The $b_s$ within one row-direction group
+are distinct because the $U_s$ are distinct.  Uniqueness of nonzero pure-tensor
+factorization gives a contradiction.  Orbits 1 and 2 are impossible.
+
+\subsection{\texorpdfstring{Type $(6,6,6)$ with one rank-two factor}{Type (6,6,6) with one rank-two factor}}
+
+Every nonzero row restriction has 12 active rank-one terms plus the rank-two
+term.  Lemma~\ref{lem:excess} applies to all three restrictions.
+
+First, $z_x\neq0$ for every nonzero $x$.  Otherwise
+\eqref{eq:quotient-relation} places every output factor active under $x$ in
+$H_x$.  Choose $y\neq x$.  The two active sets overlap in one complete
+six-term rank-one row group and the rank-two term.  The seven overlap output
+factors are nonzero and lie in $H_x$, so none lies in $H_y$.  Their quotient
+tensors under restriction $y$ are nonzero.  Equation
+\eqref{eq:quotient-relation} would make the six rank-one quotient tensors equal,
+contradicting their distinct $b_s$ factors.
+
+Since $z_x\neq0$, every term in $\supp(\lambda^x)$ has the same nonzero
+quotient pure tensor.  At most one term can come from either active rank-one
+row group, and at most one is the rank-two term.  Hence
+\begin{equation}\label{eq:support-capacity}
+ |\supp(\lambda^x)|\leq3
+\end{equation}
+for each of the three restrictions.
+
+Each of the 18 rank-one terms is active under exactly two restrictions.  If
+its relation coefficient vanished in both, equation
+\eqref{eq:quotient-relation} would put its nonzero output factor in two distinct
+spaces $H_x$ and $H_y$, contradicting \eqref{eq:intersection}.  Thus every one
+of the 18 terms occurs in at least one relation support.  The three supports
+therefore require at least 18 incidences.  Equation
+\eqref{eq:support-capacity} permits at most
+\[
+ 3\text{ restrictions}\times3\text{ terms}=9,
+\]
+a contradiction.  Orbit 3 is impossible.
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Proposition~\ref{prop:profiles} classifies every first-factor support of a
+hypothetical rank-19 decomposition.  The three arguments above exclude all
+four orbits, so rank 19 is impossible.  Wang's checked bound excludes ranks at
+most 18, while the 20-term witness in Appendix~\ref{app:witness} proves rank at
+most 20.  Therefore the rank is exactly 20.
+\end{proof}
+
+\section{Exact verification}\label{sec:verification}
+
+All computations use binary or integer arithmetic.  The final certificate
+links four independently replayable components:
+\begin{enumerate}
+\item Wang's source commit and the n324 certificate/backtracking archive; a
+      clean Linux build of the pinned verifier reports unconstrained lower
+      bound 19 and \texttt{OK};
+\item the profile CNF and its checked DRAT and LRAT traces, followed by direct
+      enumeration of 56,070 candidates and the four-orbit quotient;
+\item the row-restriction packet, regenerated from the 252 profiles and checked
+      to exclude every one; and
+\item the 20-term witness, expanded into all $6\cdot12\cdot8=576$ tensor
+      coefficients and compared with \eqref{eq:tensor}.
+\end{enumerate}
+
+From the repository root, the exact-rank replay is
+\begin{verbatim}
+CERT=output/f2-234-tensor-rank/exact-rank20-certificate-v2.json
+python3 -m experiments.f2_234_tight_row_restriction \
+  verify-exact-rank20 --artifact "$CERT" --timeout 300
+\end{verbatim}
+It returns \texttt{EXACT\_RANK\_VERIFIED}, rank 20, 252 excluded rank-19
+profiles, and 20 upper-bound terms.  The upper-witness controls and focused
+tests run with
+\begin{verbatim}
+python3 -m evaluators.f2_234_tensor_rank_eval verify-controls
+python3 -m pytest tests/test_f2_234_tight_row_restriction.py \
+  tests/test_f2_234_profile_orbits.py \
+  tests/test_f2_234_tensor_rank_eval.py -q
+\end{verbatim}
+The controls accept the rank-20 witness and Strassen's rank-7 tensor, and reject
+a one-bit corruption, a zero factor, and a false declared rank.  The focused
+suite passes 35 tests.
+
+The final certificate has SHA-256 digest
+\begin{center}
+\footnotesize\ttfamily
+89dbb5b9de7b13464a7bb7c78d6081a884c9ae933be923a7c787b84fcb5bd29b.
+\end{center}
+It records the child digests for the profile packet, reviewed exclusion, Wang
+log and inputs, upper witness, and profile CNF/DRAT/LRAT proof pair.  A fresh
+independent replay re-derived the restriction proof, reproduced the profile
+coverage and upper witness, and repeated the primary prior-art search before
+publication review.
+
+\paragraph{Data and code availability.}
+The exact certificate, proof traces, standalone verifier modules, tests, and
+paper source form the reproducibility package accompanying this manuscript.  A
+permanent repository identifier will be added upon archival deposit; no result
+in this paper depends on that future deposit.
+
+\paragraph{Research-system disclosure.}
+Beyond, the research system operated by Nth Research Collective, materially
+assisted with literature retrieval, hypothesis generation, exact computation,
+proof critique, orchestration, adversarial review, and drafting.  Ian
+D'Ambrosio selected the target, directed the investigation, reconciled the
+evidence, verified the final claims, and accepts full responsibility for the
+manuscript.  Beyond is not an author.
+
+\appendix
+\section{An explicit 20-term upper witness}\label{app:witness}
+
+Index $U$ by the six left-input coordinates in row-major order, $V$ by the 12
+right-input coordinates in row-major order, and $W$ by the eight output-dual
+coordinates in row-major order.  For a binary vector $r=(r_0,\ldots,r_{d-1})$,
+write its hexadecimal mask for the integer $\sum_{j=0}^{d-1}r_j2^j$.
+Table~\ref{tab:witness} lists the 20 rank-one terms
+$u_s\otimes v_s\otimes w_s$.  Expanding the masks gives 24 unit coefficients
+at $((i,j),(j,k),(i,k))$ and zero at the other 552 coordinates.
+
+\begin{table}[ht]
+\centering
+\caption{Hexadecimal factor masks for the exact rank-20 decomposition.}
+\label{tab:witness}
+\small
+\begin{tabular}{@{}rccc@{\qquad}rccc@{}}
+\toprule
+$s$ & $u_s$ & $v_s$ & $w_s$ & $s$ & $u_s$ & $v_s$ & $w_s$\\
+\midrule
+1  & \texttt{20} & \texttt{100} & \texttt{90} &
+11 & \texttt{20} & \texttt{220} & \texttt{60}\\
+2  & \texttt{3e} & \texttt{02a} & \texttt{82} &
+12 & \texttt{10} & \texttt{010} & \texttt{11}\\
+3  & \texttt{01} & \texttt{008} & \texttt{0a} &
+13 & \texttt{12} & \texttt{9d5} & \texttt{01}\\
+4  & \texttt{38} & \texttt{020} & \texttt{22} &
+14 & \texttt{08} & \texttt{022} & \texttt{f0}\\
+5  & \texttt{04} & \texttt{880} & \texttt{09} &
+15 & \texttt{16} & \texttt{980} & \texttt{81}\\
+6  & \texttt{03} & \texttt{040} & \texttt{44} &
+16 & \texttt{13} & \texttt{045} & \texttt{41}\\
+7  & \texttt{01} & \texttt{044} & \texttt{05} &
+17 & \texttt{3f} & \texttt{62a} & \texttt{02}\\
+8  & \texttt{08} & \texttt{023} & \texttt{50} &
+18 & \texttt{36} & \texttt{92a} & \texttt{80}\\
+9  & \texttt{04} & \texttt{400} & \texttt{06} &
+19 & \texttt{06} & \texttt{080} & \texttt{88}\\
+10 & \texttt{3b} & \texttt{620} & \texttt{42} &
+20 & \texttt{1b} & \texttt{625} & \texttt{40}\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begingroup
+\small
+\begin{thebibliography}{Wang2026}
+
+\bibitem{Blaser2003}
+M.~Bl\"aser,
+\newblock On the complexity of the multiplication of matrices of small formats,
+\newblock \emph{Journal of Complexity} 19 (2003), 43--60.
+\newblock \href{https://doi.org/10.1016/S0885-064X(02)00007-9}{doi:10.1016/S0885-064X(02)00007-9}.
+
+\bibitem{FawziEtAl2022}
+A.~Fawzi et al.,
+\newblock Discovering faster matrix multiplication algorithms with
+reinforcement learning,
+\newblock \emph{Nature} 610 (2022), 47--53.
+\newblock \href{https://doi.org/10.1038/s41586-022-05172-4}{doi:10.1038/s41586-022-05172-4}.
+
+\bibitem{HopcroftKerr1971}
+J.~E. Hopcroft and L.~R. Kerr,
+\newblock On minimizing the number of multiplications necessary for matrix
+multiplication,
+\newblock \emph{SIAM Journal on Applied Mathematics} 20 (1971), 30--36.
+\newblock \href{https://doi.org/10.1137/0120004}{doi:10.1137/0120004}.
+
+\bibitem{Smirnov2013}
+A.~V. Smirnov,
+\newblock The bilinear complexity and practical algorithms for matrix
+multiplication,
+\newblock \emph{Computational Mathematics and Mathematical Physics} 53 (2013),
+1781--1795.
+\newblock \href{https://doi.org/10.1134/S0965542513120129}{doi:10.1134/S0965542513120129}.
+
+\bibitem{Wang2026}
+C.~Wang,
+\newblock Automated lower bounds for bilinear complexity over finite fields,
+\newblock arXiv:2603.07280v10, 2026.
+\newblock \href{https://arxiv.org/abs/2603.07280v10}{arXiv:2603.07280v10}.
+
+\end{thebibliography}
+\endgroup
+
+\end{document}

@@ -1,0 +1,282 @@
+{
+  "claim": "Every 19-form U support satisfying all pinned Wang n324 capacity inequalities contains at most one rank-two 3x2 form; the remaining supports comprise exactly 252 profiles in four symmetry orbits.",
+  "classification": {
+    "checked_profiles_with_at_most_one_rank_two": 56070,
+    "distinctness_scope": {
+      "capacity_per_nonzero_u_form": 1,
+      "consequence": "every hypothetical rank-19 U factor is nonzero and appears at most once",
+      "one_dimensional_cuts": 63
+    },
+    "group": "GL(3,2) x GL(2,2)",
+    "group_order": 1008,
+    "legal_by_rank_two_count": {
+      "0": 210,
+      "1": 42
+    },
+    "legal_profiles": 252,
+    "orbit_count": 4,
+    "orbits": [
+      {
+        "omitted_rank_one_forms_wang": [
+          60,
+          63
+        ],
+        "orbit_index": 0,
+        "orbit_size": 63,
+        "rank_two_forms_wang": [],
+        "representative_target_2x3": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          16,
+          18,
+          24,
+          27,
+          32,
+          36,
+          40,
+          45,
+          48,
+          56
+        ],
+        "representative_wang_3x2": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          8,
+          10,
+          12,
+          15,
+          16,
+          17,
+          20,
+          21,
+          32,
+          34,
+          40,
+          42,
+          48,
+          51
+        ]
+      },
+      {
+        "omitted_rank_one_forms_wang": [
+          42,
+          63
+        ],
+        "orbit_index": 1,
+        "orbit_size": 21,
+        "rank_two_forms_wang": [],
+        "representative_target_2x3": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          16,
+          18,
+          24,
+          27,
+          32,
+          36,
+          40,
+          45,
+          48,
+          54
+        ],
+        "representative_wang_3x2": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          8,
+          10,
+          12,
+          15,
+          16,
+          17,
+          20,
+          21,
+          32,
+          34,
+          40,
+          48,
+          51,
+          60
+        ]
+      },
+      {
+        "omitted_rank_one_forms_wang": [
+          42,
+          60
+        ],
+        "orbit_index": 2,
+        "orbit_size": 126,
+        "rank_two_forms_wang": [],
+        "representative_target_2x3": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          16,
+          18,
+          24,
+          27,
+          32,
+          36,
+          40,
+          45,
+          48,
+          63
+        ],
+        "representative_wang_3x2": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          8,
+          10,
+          12,
+          15,
+          16,
+          17,
+          20,
+          21,
+          32,
+          34,
+          40,
+          48,
+          51,
+          63
+        ]
+      },
+      {
+        "omitted_rank_one_forms_wang": [
+          15,
+          21,
+          32
+        ],
+        "orbit_index": 3,
+        "orbit_size": 42,
+        "rank_two_forms_wang": [
+          58
+        ],
+        "representative_target_2x3": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          8,
+          9,
+          16,
+          18,
+          24,
+          36,
+          40,
+          45,
+          48,
+          54,
+          56,
+          60,
+          63
+        ],
+        "representative_wang_3x2": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          8,
+          10,
+          12,
+          16,
+          17,
+          20,
+          34,
+          40,
+          42,
+          48,
+          51,
+          58,
+          60,
+          63
+        ]
+      }
+    ]
+  },
+  "interpretation": "This is a complete first-factor support classification only. It does not establish compatible V/W factors or determine the tensor rank.",
+  "max_rank_two_proof": {
+    "assertion": "legal profile with at least two rank-two forms is UNSAT",
+    "cadical_unsat": true,
+    "cnf": {
+      "active_capacities": 1897,
+      "clauses": 124027,
+      "path": "output/f2-234-tensor-rank/profile-orbits/at-least-two-rank2.cnf",
+      "sha256": "584916d170bc4372e0d114b6589f9363141d5864d5925c0f926b1ca9184db4e7",
+      "variables": 62267
+    },
+    "drat": {
+      "path": "output/f2-234-tensor-rank/profile-orbits/proof.drat",
+      "sha256": "55fee5806b2e7fe6f4166ae06bd9125bf3f06cc3dfa3cd7722e77091bff87343"
+    },
+    "drat_verified": true,
+    "kissat_status": "UNKNOWN_TIMEOUT: command timed out after 60s: /opt/homebrew/bin/kissat --seed=0 --unsat output/f2-234-tensor-rank/profile-orbits/at-least-two-rank2.cnf",
+    "lrat": {
+      "path": "output/f2-234-tensor-rank/profile-orbits/proof.lrat",
+      "sha256": "adce8ddb664eaedafa2b3599822aacddd0800d1721c3edcdf984ffbd8d4f551e"
+    },
+    "lrat_verified": true,
+    "proof_reused_after_fresh_replay": true
+  },
+  "schema": "f2-234-legal-u-profile-orbits-v1",
+  "source": {
+    "btp_sha256": "875f7ce52ad6afc9ffbab70269cbaca25cdf205174da2c8e2edec2af5aff2e4d",
+    "certificate_sha256": "b1926bac436850d6c43c1c909a4bdfd9c84a073ed14b6359635944dfd694316d",
+    "subspaces": 2825,
+    "wang_commit": "0ab0562f2fb5430e3ce16035e5882720b5bb613b"
+  },
+  "tools": {
+    "cadical": {
+      "path": "/opt/homebrew/bin/cadical",
+      "sha256": "65eb3da69b48f4fd65f7d557cb21e1fd8efdd381843e10b5e23eba60ddfb25db",
+      "version": "3.0.1"
+    },
+    "drat_trim": {
+      "path": "/Users/iandambrosio/Development/nth-research/tmp/upstream/sat-proof-checkers/drat-trim",
+      "sha256": "8a68efd8a7320f725578c7305d8522c805a3711ddccc2bbfa4252a5b9de1fca1",
+      "version": "usage: drat-trim [INPUT] [<PROOF>] [<option> ...]"
+    },
+    "kissat": {
+      "path": "/opt/homebrew/bin/kissat",
+      "sha256": "85050153d046ef70be96ceaa9bdd18a59009d7ba163fa8818b74b0b50b49e710",
+      "version": "4.0.4"
+    },
+    "lrat_check": {
+      "path": "/Users/iandambrosio/Development/nth-research/tmp/upstream/sat-proof-checkers/lrat-check",
+      "sha256": "22bddc5528deb2dab0c49c726cafe2e89d8b77c9abc4a055d8d9f7f7b08d6d66",
+      "version": "c expecting proof in stdin"
+    },
+    "python_sat_version": "1.8.dev24"
+  }
+}

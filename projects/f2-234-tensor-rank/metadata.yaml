@@ -1,0 +1,25 @@
+schema_version: 1
+id: f2-234-tensor-rank
+title: The Exact F2-Rank of 2x3 by 3x4 Matrix Multiplication
+status: preprint
+released_on: 2026-08-11
+
+domains:
+  - computational-complexity
+  - symbolic-computation
+
+arxiv:
+  primary_category: cs.CC
+  cross_list:
+    - cs.SC
+  identifier: null
+
+publication:
+  title: The Exact F2-Rank of 2x3 by 3x4 Matrix Multiplication
+  version: 1.0.0
+  doi: 10.5281/zenodo.21895176
+  resource_type: publication
+
+verification:
+  command: python3 projects/f2-234-tensor-rank/verification/verify_all.py
+  arithmetic: exact-integer

@@ -1,0 +1,63 @@
+{
+  "claim": "R_F2(<2,3,4>) = 20",
+  "field": "F2",
+  "format": "2x3-by-3x4",
+  "independent_review": {
+    "correctness": "PASS",
+    "novelty": "PASS",
+    "openness": "OPEN",
+    "publication_recommendation": "PUBLISH",
+    "significance": "NOTABLE"
+  },
+  "lower_bound": {
+    "excluded_rank": 19,
+    "profile_classification": {
+      "artifact": "output/f2-234-tensor-rank/profile-orbits/profile-orbits.json",
+      "artifact_sha256": "82a7c6f5d0cb790ac796fa08281eb7b45acaa040f87b329883908c39acc3e122",
+      "cnf_sha256": "584916d170bc4372e0d114b6589f9363141d5864d5925c0f926b1ca9184db4e7",
+      "drat_sha256": "55fee5806b2e7fe6f4166ae06bd9125bf3f06cc3dfa3cd7722e77091bff87343",
+      "legal_profiles": 252,
+      "lrat_sha256": "adce8ddb664eaedafa2b3599822aacddd0800d1721c3edcdf984ffbd8d4f551e",
+      "maximum_rank_two_u_factors": 1,
+      "orbit_count": 4,
+      "proof_provenance": "output/f2-234-tensor-rank/profile-orbits/proof-pair.manifest.json",
+      "proof_provenance_sha256": "fe8a1b87c1a3668aacdd813ed62e68c44c91adbdbaba37dbc6fb38b96fddbd5f"
+    },
+    "restriction_exclusion": {
+      "artifact": "output/f2-234-tensor-rank/all-legal-u-profile-tight-row-exclusion-reviewed.json",
+      "artifact_sha256": "4e73f84c197ce9e9d475ee3742af7a84003b2b0833db057e62b22cc481211772",
+      "excluded_profiles": 252,
+      "remaining_profiles": 0
+    },
+    "wang_certificate": {
+      "acceptance_signals": [
+        "Verified. Rank lower bound for matrix_q02_n324 is 19.",
+        "UNCONSTRAINED TENSOR RANK LOWER BOUND: 19",
+        "OK. Verified certs/matrix/cert_matrix_q02_n324.pb.txt"
+      ],
+      "backtracking_archive_path": "tmp/upstream/f2-234-tensor-rank/tensor-rank-lower-bound-0ab0562f2fb5430e3ce16035e5882720b5bb613b/certs/matrix/cert_matrix_q02_n324.btp",
+      "backtracking_archive_sha256": "875f7ce52ad6afc9ffbab70269cbaca25cdf205174da2c8e2edec2af5aff2e4d",
+      "certificate_path": "tmp/upstream/f2-234-tensor-rank/tensor-rank-lower-bound-0ab0562f2fb5430e3ce16035e5882720b5bb613b/certs/matrix/cert_matrix_q02_n324.pb.txt",
+      "certificate_sha256": "b1926bac436850d6c43c1c909a4bdfd9c84a073ed14b6359635944dfd694316d",
+      "linux_bazel_version": "8.3.1",
+      "linux_verifier_log": "output/f2-234-tensor-rank/wang-n324-linux-full.log",
+      "linux_verifier_log_sha256": "a30d346e94f55fc8ee9dd9d03999c8a0a626ed508e6b47975e656feb4a20304a",
+      "source_commit": "0ab0562f2fb5430e3ce16035e5882720b5bb613b"
+    }
+  },
+  "proof_source": "docs/research/2026-08-11-f2-234-rank20-proof.md",
+  "replay": {
+    "campaign_tests": "python3 -m pytest tests/test_*f2* -q",
+    "exact_certificate": "python3 -m experiments.f2_234_tight_row_restriction verify-exact-rank20 --artifact output/f2-234-tensor-rank/exact-rank20-certificate-v2.json --timeout 300",
+    "upper_control": "python3 -m evaluators.f2_234_tensor_rank_eval verify-controls"
+  },
+  "schema": "f2-234-exact-rank20-certificate-v2",
+  "upper_bound": {
+    "artifact": "knowledge/data/f2_234_rank20_alphatensor.json",
+    "artifact_sha256": "5b7193e7f9368eddc565b0b6d9b0dc8742760509d99fe9914cab8352e22b865b",
+    "coefficients_checked": 576,
+    "rank": 20,
+    "target_ones": 24,
+    "terms": 20
+  }
+}

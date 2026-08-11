@@ -1,0 +1,22 @@
+{
+  "schema": "f2-234-profile-proof-pair-provenance-v1",
+  "claim_scope": "Prepared proof inputs only. Hash matching does not replace fresh DRAT and LRAT replay.",
+  "files": {
+    "cnf": {
+      "path": "output/f2-234-tensor-rank/profile-orbits/at-least-two-rank2.cnf",
+      "bytes": 1980573,
+      "sha256": "584916d170bc4372e0d114b6589f9363141d5864d5925c0f926b1ca9184db4e7"
+    },
+    "drat": {
+      "path": "output/f2-234-tensor-rank/profile-orbits/proof.drat",
+      "bytes": 191301438,
+      "sha256": "55fee5806b2e7fe6f4166ae06bd9125bf3f06cc3dfa3cd7722e77091bff87343"
+    },
+    "lrat": {
+      "path": "output/f2-234-tensor-rank/profile-orbits/proof.lrat",
+      "bytes": 278926270,
+      "sha256": "adce8ddb664eaedafa2b3599822aacddd0800d1721c3edcdf984ffbd8d4f551e"
+    }
+  },
+  "status": "AWAITING_FRESH_REPLAY"
+}

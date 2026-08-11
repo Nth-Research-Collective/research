@@ -1,0 +1,5 @@
+# Pinned Python dependencies for the F2 <2,3,4> exact-rank replay.
+# python-sat is load-bearing: the replay regenerates the profile CNF with
+# CardEnc and byte-compares it to the packaged CNF.
+numpy
+python-sat==1.8.dev24
