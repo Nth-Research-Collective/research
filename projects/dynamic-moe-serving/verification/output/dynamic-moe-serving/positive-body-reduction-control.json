@@ -1,0 +1,55 @@
+{
+  "analytic_constants": {
+    "augmented_budget_factor": 2,
+    "balanced_map_service_loss": 2,
+    "fractional_service_to_vertical_movement": "4/3",
+    "fractional_total_to_body_movement": "7/3",
+    "lazy_threshold_latency_loss": 3,
+    "polyhedral_epigraph_loss": "4/3"
+  },
+  "bridge": {
+    "augmented_vectors": 84,
+    "k": 3,
+    "m": 3,
+    "movement_checks": 7056,
+    "service_checks": 2184,
+    "verdict": "EXHAUSTIVE_BRIDGE_PASS"
+  },
+  "movement_negative_control": {
+    "factor": 2,
+    "full_l1": "6",
+    "one_sided": "3"
+  },
+  "offline_dp": {
+    "m1_cost": "9",
+    "one_step_cost": "4",
+    "one_step_path": [
+      [
+        0,
+        1
+      ]
+    ]
+  },
+  "reset": {
+    "passes": true,
+    "reset_allowance": "3/16",
+    "twice_height": "22/3",
+    "vertical_movement": "343/48"
+  },
+  "tangent_grid": {
+    "envelope_factor": "3/4",
+    "k": 8,
+    "ratio": "3/2",
+    "rational_samples": 129,
+    "scales": [
+      "1",
+      "3/2",
+      "9/4",
+      "27/8",
+      "81/16",
+      "243/32",
+      "729/64"
+    ]
+  },
+  "verdict": "DYNAMIC_MOE_POSITIVE_BODY_CONTROL_PASS"
+}

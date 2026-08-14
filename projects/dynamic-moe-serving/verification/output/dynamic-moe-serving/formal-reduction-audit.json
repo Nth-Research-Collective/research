@@ -1,0 +1,289 @@
+{
+  "algebra_checks": {
+    "competitive_assembly": {
+      "allowed_axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "backend": "lean",
+      "declaration": "DynamicMoePositiveBody.integral_competitive_from_positive_body",
+      "imports": [
+        "Mathlib.Tactic"
+      ],
+      "lean_version": "Lean (version 4.32.2, commit f3b06c705e6c85f5314019d5d3baab0fec5b580c, Release)",
+      "proof_file": "formal/lean_project/LeanProject/DynamicMoePositiveBody.lean",
+      "proof_sha256": "106a57e46f75193727af858bda52a11db92cdf8e0473aaa4a8b77f44cdfb77ad",
+      "statement": "theorem integral_competitive_from_positive_body\n    (C k opt M movement service integralCost : \u211d)\n    (hbody : M \u2264 C * (k + 2 * opt))\n    (hmovement : movement \u2264 M + 2 * k)\n    (hservice : service \u2264 (4 / 3 : \u211d) * M + 16 / 3)\n    (hround : integralCost \u2264 movement + 3 * service) :\n    integralCost \u2264 10 * C * opt + (5 * C + 2) * k + 16",
+      "statement_sha256": "367ff341934715d1b8be842b78012e9dde120035df1e5657a13ac4066fff61c8"
+    },
+    "finite_tangent_grid": {
+      "allowed_axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "backend": "lean",
+      "declaration": "DynamicMoePositiveBody.finite_grid_tangent_captures_three_quarters",
+      "imports": [
+        "Mathlib.Tactic"
+      ],
+      "lean_version": "Lean (version 4.32.2, commit f3b06c705e6c85f5314019d5d3baab0fec5b580c, Release)",
+      "proof_file": "formal/lean_project/LeanProject/DynamicMoePositiveBody.lean",
+      "proof_sha256": "106a57e46f75193727af858bda52a11db92cdf8e0473aaa4a8b77f44cdfb77ad",
+      "statement": "theorem finite_grid_tangent_captures_three_quarters\n    (r q k : \u211d) (hr : 0 \u2264 r) (hq : 1 \u2264 q) (hqk : q \u2264 1 + 2 * k) :\n    \u2203 n : \u2115,\n      (3 / 2 : \u211d) ^ n \u2264 1 + 2 * k \u2227\n      (3 / 4 : \u211d) * (r / q) \u2264\n        r * (2 * (3 / 2 : \u211d) ^ n - q) / ((3 / 2 : \u211d) ^ n) ^ 2",
+      "statement_sha256": "238e2ce4c3f538f477c776d757461477a0d40b19d1dc8a38b3bc3258fce87c6c"
+    },
+    "integer_tangent_grid": {
+      "allowed_axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "backend": "lean",
+      "declaration": "DynamicMoePositiveBody.integer_grid_tangent_captures_three_quarters",
+      "imports": [
+        "Mathlib.Tactic"
+      ],
+      "lean_version": "Lean (version 4.32.2, commit f3b06c705e6c85f5314019d5d3baab0fec5b580c, Release)",
+      "proof_file": "formal/lean_project/LeanProject/DynamicMoePositiveBody.lean",
+      "proof_sha256": "106a57e46f75193727af858bda52a11db92cdf8e0473aaa4a8b77f44cdfb77ad",
+      "statement": "theorem integer_grid_tangent_captures_three_quarters\n    (r q : \u211d) (k : \u2115) (hr : 0 \u2264 r) (hq : 1 \u2264 q)\n    (hqk : q \u2264 1 + 2 * k) :\n    \u2203 n : \u2115, 1 \u2264 n \u2227 n \u2264 1 + 2 * k \u2227\n      (3 / 4 : \u211d) * (r / q) \u2264\n        r * (2 * (n : \u211d) - q) / (n : \u211d) ^ 2",
+      "statement_sha256": "d30f3bb2d47f9ade1198827c6c91535f052e09c4cdeb560c92bb41ab4a4c8b6a"
+    },
+    "shrinking_reset": {
+      "allowed_axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "backend": "lean",
+      "declaration": "DynamicMoePositiveBody.shrinking_reset_charges_moe_service",
+      "imports": [
+        "Mathlib.Tactic"
+      ],
+      "lean_version": "Lean (version 4.32.2, commit f3b06c705e6c85f5314019d5d3baab0fec5b580c, Release)",
+      "proof_file": "formal/lean_project/LeanProject/DynamicMoePositiveBody.lean",
+      "proof_sha256": "106a57e46f75193727af858bda52a11db92cdf8e0473aaa4a8b77f44cdfb77ad",
+      "statement": "theorem shrinking_reset_charges_moe_service\n    (s previous following \u03b4Previous \u03b4Following : \u211d)\n    (hprevious : previous \u2264 2 * \u03b4Previous)\n    (hfollowing : following \u2264 2 * \u03b4Following) :\n    (8 / 3 : \u211d) * s \u2264\n      (4 / 3 : \u211d) * (|s - previous| + |s - following|) +\n        (8 / 3 : \u211d) * (\u03b4Previous + \u03b4Following)",
+      "statement_sha256": "5d9a686dfaa2a721897bb3887b408cee8a22270c57e35599b83daf2bf15ff20c"
+    }
+  },
+  "algebra_proof_sha256": "106a57e46f75193727af858bda52a11db92cdf8e0473aaa4a8b77f44cdfb77ad",
+  "lower_check": {
+    "allowed_axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "backend": "lean",
+    "declaration": "DynamicMoeSemantics.competitive_factor_lower_bound_at_least_one",
+    "imports": [
+      "Mathlib.Tactic",
+      "LeanProject.DynamicMoeSemantics"
+    ],
+    "lean_version": "Lean (version 4.32.2, commit f3b06c705e6c85f5314019d5d3baab0fec5b580c, Release)",
+    "proof_file": "formal/lean_project/LeanProject/DynamicMoeLowerBound.lean",
+    "proof_sha256": "2342b84038053a9ece02e09d3ff3a70c9279ceb9c366ce952276dc837c9fc146",
+    "statement": "theorem competitive_factor_lower_bound_at_least_one\n    (k : \u2115) (\u0393 : \u211d) (hupper : HasCompetitiveUpperForK k \u0393) : 1 \u2264 \u0393",
+    "statement_sha256": "cef298b311ca3ba2a993b4130e993aa49adeacf046f8de0afe783087a78f81ad"
+  },
+  "lower_proof_sha256": "2342b84038053a9ece02e09d3ff3a70c9279ceb9c366ce952276dc837c9fc146",
+  "main_checks": {
+    "explicit_constant_upper": {
+      "allowed_axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "backend": "lean",
+      "declaration": "DynamicMoeMain.dynamicMoe_explicit_constant_upper_of_source_theorems",
+      "imports": [
+        "LeanProject.DynamicMoeLazyThresholdInterface",
+        "LeanProject.DynamicMoeLowerBound",
+        "LeanProject.DynamicMoePositiveBodyReduction"
+      ],
+      "lean_version": "Lean (version 4.32.2, commit f3b06c705e6c85f5314019d5d3baab0fec5b580c, Release)",
+      "proof_file": "formal/lean_project/LeanProject/DynamicMoeMain.lean",
+      "proof_sha256": "29203993498476a1142524a7664da2819f7233882863be283d7cf32e49242db0",
+      "statement": "theorem dynamicMoe_explicit_constant_upper_of_source_theorems\n    (C : \u211d) (hC : 1 \u2264 C)\n    (hpositiveBody : HasTwoSparsePositiveBodyChaser.{0} C)\n    (hlazyThreshold : HasLazyThresholdRoundingPrimitive) :\n    \u2200 k : \u2115, 1 \u2264 k \u2192 HasCompetitiveUpperForK k (10 * C)",
+      "statement_sha256": "b19d5b9e28d46fb1927c9c46da6508175df667f0861eba60e0b4b16a4845f434"
+    },
+    "randomized_theta_one": {
+      "allowed_axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "axioms": [
+        "Classical.choice",
+        "Quot.sound",
+        "propext"
+      ],
+      "backend": "lean",
+      "declaration": "DynamicMoeMain.dynamicMoe_randomized_theta_one_of_source_theorems",
+      "imports": [
+        "LeanProject.DynamicMoeLazyThresholdInterface",
+        "LeanProject.DynamicMoeLowerBound",
+        "LeanProject.DynamicMoePositiveBodyReduction"
+      ],
+      "lean_version": "Lean (version 4.32.2, commit f3b06c705e6c85f5314019d5d3baab0fec5b580c, Release)",
+      "proof_file": "formal/lean_project/LeanProject/DynamicMoeMain.lean",
+      "proof_sha256": "29203993498476a1142524a7664da2819f7233882863be283d7cf32e49242db0",
+      "statement": "theorem dynamicMoe_randomized_theta_one_of_source_theorems\n    (C : \u211d) (hC : 1 \u2264 C)\n    (hpositiveBody : HasTwoSparsePositiveBodyChaser.{0} C)\n    (hlazyThreshold : HasLazyThresholdRoundingPrimitive) :\n    HasTightConstantRandomizedCompetitiveRatio",
+      "statement_sha256": "04592f4cfcb453736ffbd83a126b9244b0b71089998ceb6c7e21eac3cebe8fa8"
+    }
+  },
+  "main_proof_sha256": "29203993498476a1142524a7664da2819f7233882863be283d7cf32e49242db0",
+  "positive_reduction_check": {
+    "allowed_axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "backend": "lean",
+    "declaration": "DynamicMoePositiveBodyReduction.hasPositiveBodyFractionalReduction_of_twoSparseChaser",
+    "imports": [
+      "LeanProject.DynamicMoePositiveBody",
+      "LeanProject.DynamicMoePositiveBodyInterface",
+      "LeanProject.DynamicMoeSemantics"
+    ],
+    "lean_version": "Lean (version 4.32.2, commit f3b06c705e6c85f5314019d5d3baab0fec5b580c, Release)",
+    "proof_file": "formal/lean_project/LeanProject/DynamicMoePositiveBodyReduction.lean",
+    "proof_sha256": "33914a064c114925136cd483ae1bf0d40e30a6bd8b23d9f18a71c53644f140c2",
+    "statement": "theorem hasPositiveBodyFractionalReduction_of_twoSparseChaser {C : \u211d}\n    (hchaser : HasTwoSparsePositiveBodyChaser.{0} C) :\n    HasPositiveBodyFractionalReduction C",
+    "statement_sha256": "73e58e8d348c4f9898cfa63a49ddf390c74683eb0b63d47f50cfc467fd94b707"
+  },
+  "positive_reduction_proof_sha256": "33914a064c114925136cd483ae1bf0d40e30a6bd8b23d9f18a71c53644f140c2",
+  "positive_source_compatibility_check": {
+    "allowed_axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "backend": "lean",
+    "declaration": "DynamicMoePositiveBodyReduction.eventResetBodies_packing_positive_rightHandSide",
+    "imports": [
+      "LeanProject.DynamicMoePositiveBody",
+      "LeanProject.DynamicMoePositiveBodyInterface",
+      "LeanProject.DynamicMoeSemantics"
+    ],
+    "lean_version": "Lean (version 4.32.2, commit f3b06c705e6c85f5314019d5d3baab0fec5b580c, Release)",
+    "proof_file": "formal/lean_project/LeanProject/DynamicMoePositiveBodyReduction.lean",
+    "proof_sha256": "33914a064c114925136cd483ae1bf0d40e30a6bd8b23d9f18a71c53644f140c2",
+    "statement": "theorem eventResetBodies_packing_positive_rightHandSide {m k : \u2115}\n    (requests : List (Workload m)) :\n    \u2200 body \u2208 eventResetBodies (m := m) (k := k) requests,\n      body.PackingPositiveRightHandSide",
+    "statement_sha256": "becba744d8c63f6acdfbe416552dcb8708b4df0e8a223e013dfb215d13e1caae"
+  },
+  "rounding_adapter_check": {
+    "allowed_axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "backend": "lean",
+    "declaration": "DynamicMoeLazyThresholdInterface.hasLazyThresholdRounding_of_primitive",
+    "imports": [
+      "LeanProject.DynamicMoeSemantics"
+    ],
+    "lean_version": "Lean (version 4.32.2, commit f3b06c705e6c85f5314019d5d3baab0fec5b580c, Release)",
+    "proof_file": "formal/lean_project/LeanProject/DynamicMoeLazyThresholdInterface.lean",
+    "proof_sha256": "babf5c2d93f0b5ee2ff41b325b05c41e829735ab05ab6b8ece5262cd1d7a5eae",
+    "statement": "theorem hasLazyThresholdRounding_of_primitive\n    (hprimitive : HasLazyThresholdRoundingPrimitive) :\n    HasLazyThresholdRounding",
+    "statement_sha256": "1d2740e1339b6b66cdda4d10990a8238d47a42cc70a9ca21aa4199c5a8e47912"
+  },
+  "rounding_interface_proof_sha256": "babf5c2d93f0b5ee2ff41b325b05c41e829735ab05ab6b8ece5262cd1d7a5eae",
+  "rounding_summation_check": {
+    "allowed_axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "backend": "lean",
+    "declaration": "DynamicMoeLazyThresholdInterface.expectedMovement_of_expectedStepMovement",
+    "imports": [
+      "LeanProject.DynamicMoeSemantics"
+    ],
+    "lean_version": "Lean (version 4.32.2, commit f3b06c705e6c85f5314019d5d3baab0fec5b580c, Release)",
+    "proof_file": "formal/lean_project/LeanProject/DynamicMoeLazyThresholdInterface.lean",
+    "proof_sha256": "babf5c2d93f0b5ee2ff41b325b05c41e829735ab05ab6b8ece5262cd1d7a5eae",
+    "statement": "theorem expectedMovement_of_expectedStepMovement {m k : \u2115}\n    {initial : IntegralAllocation m k}\n    {fractional : FractionalOnlineAlgorithm m k}\n    (witness : LazyThresholdRoundingWitness m k initial fractional)\n    (requests : List (Workload m)) : by\n    letI : MeasurableSpace witness.algorithm.Seed :=\n      witness.algorithm.measurableSeed\n    exact (\u222b seed, realizedIntegralMovement witness.algorithm initial requests seed\n      \u2202witness.algorithm.seedMeasure) \u2264 fractional.movementCost initial requests",
+    "statement_sha256": "917a0265ab27407d94f54f271ef59f05073cb5681783292e7008330229d68ade"
+  },
+  "scope": "Finite tangent-grid existence, shrinking-reset service charge, final cost assembly, causal fractional and randomized integral semantics, a concrete event/reset reduction from the primitive two-sparse positive-body chaser, a shared-seed path-level Lazy Threshold Rounding adapter, the explicit 10*C upper bound, and the tight randomized Theta(1) theorem. The two primitive premises are exact formal boundaries for the cited source theorems; all Dynamic MoE bridges and the factor-one lower bound are proved.",
+  "semantic_check": {
+    "allowed_axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "axioms": [
+      "Classical.choice",
+      "Quot.sound",
+      "propext"
+    ],
+    "backend": "lean",
+    "declaration": "DynamicMoeSemantics.uniform_constant_upper_of_interfaces",
+    "imports": [
+      "Mathlib.MeasureTheory.Integral.Bochner.Basic",
+      "Mathlib.Order.ConditionallyCompleteLattice.Basic",
+      "Mathlib.Tactic"
+    ],
+    "lean_version": "Lean (version 4.32.2, commit f3b06c705e6c85f5314019d5d3baab0fec5b580c, Release)",
+    "proof_file": "formal/lean_project/LeanProject/DynamicMoeSemantics.lean",
+    "proof_sha256": "82cc9a1cde240b0b29fb83ab7a116f6a53770dc535f7654abb52ab84c0911d4a",
+    "statement": "theorem uniform_constant_upper_of_interfaces\n    (C : \u211d) (hC : 1 \u2264 C)\n    (hpositive : HasPositiveBodyFractionalReduction C)\n    (hrounding : HasLazyThresholdRounding) :\n    HasUniformConstantUpper",
+    "statement_sha256": "d949e7ae8fcee3f16100616f57871c898617b170798b7253770501ee129cba04"
+  },
+  "semantic_proof_sha256": "82cc9a1cde240b0b29fb83ab7a116f6a53770dc535f7654abb52ab84c0911d4a",
+  "verdict": "DYNAMIC_MOE_FORMAL_MAIN_PASS"
+}

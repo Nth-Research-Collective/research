@@ -1,0 +1,460 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=0.9in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{booktabs}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xurl}
+\emergencystretch=2em
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\E}{\mathbb E}
+\newcommand{\OPT}{\operatorname{OPT}}
+\newcommand{\ALG}{\operatorname{ALG}}
+\newcommand{\CPB}{C_{\mathrm{PB}}}
+
+\title{A Constant-Competitive Algorithm for Dynamic\\
+Mixture-of-Experts Serving}
+\author{Ian D'Ambrosio\\
+\small Nth Research Collective\\
+\small \texttt{ian@nthresearch.org}}
+\date{11 August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Huang, Lou, and Xiao introduced Dynamic Mixture-of-Experts Serving and gave an
+\mbox{$O(\sqrt{\log k})$}-competitive randomized algorithm for its integral primal
+problem, where $k$ is the number of replica GPUs beyond the mandatory copy of
+each expert.  Their matching lower barrier applies to an auxiliary dual and
+leaves the primal order open.  We prove that the randomized primal competitive
+ratio is in fact $\Theta(1)$ for arbitrary numbers of experts.  The upper bound
+reduces reciprocal-max service costs to chasing positive bodies with covering
+row sparsity two.  A finite tangent envelope approximates each reciprocal
+epigraph within a constant factor, summable positive resets convert accumulated
+service into movement, and a nonexpansive balanced projection removes the
+positive-body algorithm's resource augmentation.  Combining the resulting
+fractional path with Lazy Threshold Rounding gives
+\[
+ \E[\ALG]\leq 10\CPB\cdot\OPT
+   +(5\CPB+2)k+16,
+\]
+where $\CPB$ is the absolute constant from Chasing Positive Bodies at resource
+augmentation one and covering sparsity two.  The full reduction, rounding
+composition, and quantified main theorem are machine-checked in Lean 4 relative
+to exact formal interfaces for the two cited source theorems.
+Deterministic rational controls and a fresh independent replay accompany the
+formal proof.
+\end{abstract}
+
+\section{Introduction}
+
+Dynamic Mixture-of-Experts (MoE) inference must decide how many replica GPUs to
+assign to each expert as workloads change.  Moving replicas has a switching
+cost, while insufficient replication increases bottleneck latency.  Huang,
+Lou, and Xiao formalized this tradeoff as an online problem and proved an
+\mbox{$O(\sqrt{\log k})$} randomized competitive ratio for the integral primal
+problem~\cite{HLX2026}.  Their \mbox{$\Omega(\sqrt{\log k})$} construction concerns an
+offset-Fenchel-dual maximization problem.  Weak duality points in the wrong
+direction for transferring it to a primal lower bound, and the asymptotic
+primal ratio remained open.
+
+Our main result is that the primal problem has a constant randomized
+competitive ratio.  The central observation is that the epigraph of
+$r/(1+u)$ admits a finite positive-polyhedral inner approximation with constant
+distortion.  This permits a reduction to the positive-body chasing theorem of
+Bhattacharya, Buchbinder, Levin, and Saranurak~\cite{BBLS2023}.  Two obstacles
+must be handled explicitly.  First, the reciprocal epigraph has a continuum of
+tangents, whereas the cited theorem takes finite matrices.  Second, charging a
+soft service cost to movement suggests resetting an auxiliary height to zero,
+but a zero right-hand-side packing row lies outside the normalized source
+theorem.  We use a finite tangent grid and geometrically shrinking positive
+resets.  Both repairs preserve a horizon-independent constant.
+
+The reduction yields a deterministic fractional path.  Applying the Lazy
+Threshold Rounding lemma of Huang, Lou, and Xiao converts it online to an exact
+integral allocation with no expected movement loss and at most a factor-three
+service loss.
+
+\paragraph{Verification.}
+The new reduction is formalized in Lean 4.  The formal theorem treats the two
+published ingredients as explicit source interfaces and proves every new MoE
+bridge, including the finite tangent construction, event/reset feasibility,
+the comparator movement bound, exact-budget projection, service charging,
+per-step-to-path rounding telescope, and final constant assembly.
+The source interfaces were audited against pinned source archives.  A fresh
+independent referee reproduced 24 tests and both canonical artifact hashes and
+returned correctness, openness, and major-significance verdicts.
+
+\section{Model and main result}
+
+Fix $m\geq1$ experts and $k\geq1$ replica GPUs.  The integral state space is
+\[
+ X_{m,k}=\left\{x\in\Z_{\geq0}^{m}:\sum_{i=1}^{m}x_i=k\right\}.
+\]
+At round $t$, a nonnegative workload vector $r_t\in\R_{\geq0}^{m}$ is
+revealed.  The online algorithm chooses $x_t\in X_{m,k}$ and pays
+\[
+ f_t(x_t)+\lVert x_t-x_{t-1}\rVert_1,
+ \qquad
+ f_t(x)=\max_{i\in[m]}\frac{r_{t,i}}{1+x_i},
+\]
+where the integral initial state $x_0$ is part of the instance.  For a fixed
+finite workload sequence, $\OPT$ is the minimum total cost over all integral
+paths.  We use the fixed-sequence, or oblivious-adversary, convention underlying
+the expected-cost rounding result in~\cite{HLX2026}.
+
+For fixed $k$, write $\operatorname{CR}_{\mathrm{rand}}(k)$ for the infimum of
+factors $\Gamma$ with the following property: for every $m\geq1$ there is a
+constant $A_{m,k}\geq0$ such that, for every integral initial state, some causal
+randomized integral algorithm satisfies
+$\E[\ALG]\leq\Gamma\cdot\OPT+A_{m,k}$ on every fixed finite workload sequence.
+The additive term may depend on $m$ and $k$, but not on the horizon.
+
+Let $\CPB$ denote an absolute competitive constant supplied by Theorem~1.1 of
+\cite{BBLS2023} at resource augmentation $\epsilon=1$ and maximum covering-row
+support $d=2$.  We absorb into $\CPB$ the constant from reducing a positive body
+to positive halfspaces and the standard conversion between upward movement and
+full $\ell_1$ movement.
+
+\paragraph{Two properties of the service cost.}
+The proof uses two elementary features of $f_t$.  First, its reciprocal terms
+are smooth under capacity scaling: for every $r,u\geq0$,
+\[
+ \frac{r}{1+u/2}\leq2\frac{r}{1+u}.
+\]
+Thus halving capacity from $2k$ to $k$ while retaining at least half of every
+coordinate increases service by at most a factor two.  Second, $f_t$ is the
+maximum of univariate coordinate functions.  Its epigraph therefore separates
+into constraints involving only the height and one allocation coordinate, and
+the tangent discretization preserves covering-row support $d=2$.
+Equation~\eqref{eq:cover-row} makes the sparsity explicit, while
+\eqref{eq:service-height} applies the capacity-scaling inequality.
+
+\begin{theorem}[Constant upper bound]\label{thm:upper}
+For every $m,k\geq1$ and every integral initial state, there is a causal
+randomized integral online algorithm such that every fixed finite nonnegative
+workload sequence satisfies
+\[
+ \E[\ALG]
+ \leq 10\CPB\cdot\OPT+(5\CPB+2)k+16.
+\]
+The multiplicative constant is independent of $m$, $k$, and the horizon.
+\end{theorem}
+
+Every realized online path is also a feasible offline path.  Scaling an
+equal-workload one-round instance therefore makes the additive constant
+negligible, so no competitive factor is below one and
+$\operatorname{CR}_{\mathrm{rand}}(k)=\Theta(1)$.
+
+\section{Two source theorems}
+
+We use the following exact consequences of published results.
+
+\paragraph{Positive-body chasing.}
+A positive body has the form
+\[
+ K_t=\{z\in\R_{\geq0}^{D}:C^tz\geq\mathbf1,\;P^tz\leq\mathbf1\},
+\]
+where both matrices are nonnegative.  Theorem~1.1 of~\cite{BBLS2023} gives,
+for $\epsilon\in(0,1]$, an
+$O(\epsilon^{-1}\log(d/\epsilon))$-competitive online chaser whose covering
+constraints remain exact and whose packing constraints may be violated by a
+factor $1+\epsilon$; $d$ is the largest covering-row support.  Its movement is
+compared with an exact offline path beginning at zero.  Thus, when
+$\epsilon=1$ and $d=2$, the movement factor $\CPB$ is absolute, covering rows
+remain exact, and packing right-hand sides may be doubled.  Strictly positive
+right-hand sides normalize to one without changing row support.  A covering
+row with zero coefficients and zero right-hand side is vacuous and may be
+deleted.
+
+\paragraph{Lazy Threshold Rounding.}
+Lemma~4.4 of~\cite{HLX2026} applies online to any exact-budget fractional MoE
+path, using one shared set of random thresholds over all rounds.  Starting from
+the given integral initial state, it produces integral exact-budget states
+$\bar x_t$ satisfying
+\begin{align}
+ f_t(\bar x_t)&\leq3f_t(x_t),\label{eq:round-service}\\
+ \E\lVert\bar x_t-\bar x_{t-1}\rVert_1
+ &\leq\lVert x_t-x_{t-1}\rVert_1.\label{eq:round-move}
+\end{align}
+The same thresholds are used in consecutive prefixes, so summing
+\eqref{eq:round-move} gives the corresponding expected path-movement bound.
+The source implements each step greedily in polynomial time.
+
+\section{A finite positive approximation to reciprocal service}
+
+Fix a workload coordinate $r\geq0$ and augmented allocation $u\geq0$.  Write
+$q=1+u$.  For a scale $p\geq1$, define the tangent
+\[
+ L_{r,p}(u)=\frac{r(2p-q)}{p^2}
+           =\frac{r(2p-1-u)}{p^2}.
+\]
+
+\begin{lemma}[Tangent envelope]\label{lem:tangent}
+For all $r\geq0$, $q>0$, and $p>0$,
+\[
+ \frac rq-L_{r,p}(u)=\frac{r(q-p)^2}{qp^2}\geq0.
+\]
+If $0\leq u\leq2k$, some $p\in\{1,\ldots,2k+1\}$ also satisfies
+\[
+ L_{r,p}(u)\geq\frac34\frac r{1+u}.
+\]
+\end{lemma}
+
+\begin{proof}
+The first identity follows by putting the two terms over $qp^2$.  For the
+second claim, take $p=\lceil q\rceil$.  Then $1\leq p\leq2k+1$ and
+$q\leq p<q+1\leq2q$.  Hence $a=q/p\in(1/2,1]$, and
+\[
+ \frac{L_{r,p}(u)}{r/q}=a(2-a)\geq\frac34.
+\]
+The case $r=0$ is immediate.
+\end{proof}
+
+Define the finite envelope
+\[
+ H_r(u)=\max_{1\leq p\leq2k+1}L_{r,p}(u).
+\]
+Lemma~\ref{lem:tangent} gives
+\begin{equation}\label{eq:envelope}
+ \frac34\frac r{1+u}\leq H_r(u)\leq\frac r{1+u}
+ \qquad(0\leq u\leq2k).
+\end{equation}
+For $r>0$, the inequality $s\geq L_{r,p}(u)$ is equivalent to the positive
+covering row
+\begin{equation}\label{eq:cover-row}
+ \frac{p^2}{r(2p-1)}s+\frac1{2p-1}u\geq1.
+\end{equation}
+Its support has size at most two.  This is the $d=2$ sparsity supplied by the
+maximum-of-univariate form of $f_t$.  Coordinates with $r=0$ require no row;
+equivalently, one may insert and delete a vacuous zero-coefficient covering row
+with zero right-hand side, as in the formal reduction.
+
+\begin{remark}
+A geometric grid $p\in\{(3/2)^j:(3/2)^j\leq1+2k\}$ gives the same $3/4$
+factor with $O(\log(k+1))$ rows per expert.  The concrete Lean reduction uses
+the elementary integer grid above; both envelope lemmas are machine-checked.
+\end{remark}
+
+\section{The event/reset reduction}
+
+Use augmented coordinates $(u_1,\ldots,u_m,s)\in\R_{\geq0}^{m+1}$.  When
+request $r_t$ arrives, present the positive body
+\begin{equation}\label{eq:event}
+ E_t=\left\{(u,s):\sum_i u_i\leq k,\quad
+ s\geq L_{r_{t,i},p}(u_i)\;\text{for all }i,p\right\}.
+\end{equation}
+After taking the round-$t$ MoE action, present the reset body
+\begin{equation}\label{eq:reset}
+ R_t=\left\{(u,s):\sum_i u_i\leq k,\quad s\leq\delta_t\right\},
+ \qquad \delta_t=2^{-t}\quad(t\geq1),
+\end{equation}
+and set $\delta_0:=0$ for the initial accounting convention.
+Both packing rows have positive right-hand side after normalization.  The event
+covering rows have support at most two.  Both bodies are nonempty.  The reset is
+processed after the action at time $t$ and before the next request, so the
+construction remains causal.
+
+Run the positive-body chaser with $\epsilon=1$.  At an event, write its point
+as $(u_t,s_t)$.  At the following reset, write its height as $b_t$.  Then
+\begin{equation}\label{eq:aug-feasible}
+ \sum_i u_{t,i}\leq2k,\qquad s_t\geq H_{r_{t,i}}(u_{t,i})\quad\forall i,
+ \qquad 0\leq b_t\leq2\delta_t.
+\end{equation}
+
+\subsection{Removing resource augmentation}
+
+Map every $u\geq0$ with $\sum_i u_i\leq2k$ to the exact-budget fractional
+allocation
+\begin{equation}\label{eq:balanced}
+ \rho(u)=\frac{k-\frac12\sum_i u_i}{m},
+ \qquad x_i(u)=\frac{u_i}{2}+\rho(u).
+\end{equation}
+
+\begin{lemma}[Balanced projection]\label{lem:balanced}
+The map in \eqref{eq:balanced} satisfies $x(u)\geq0$,
+$\sum_i x_i(u)=k$, $x_i(u)\geq u_i/2$, and
+\[
+ \lVert x(u)-x(v)\rVert_1\leq\lVert u-v\rVert_1.
+\]
+\end{lemma}
+
+\begin{proof}
+The budget bound gives $\rho(u)\geq0$, and summing
+\eqref{eq:balanced} gives total mass $k$.  Moreover,
+\begin{align*}
+ \lVert x(u)-x(v)\rVert_1
+ &\leq\frac12\lVert u-v\rVert_1+m|\rho(u)-\rho(v)|\\
+ &=\frac12\lVert u-v\rVert_1
+   +\frac12\left|\sum_i(u_i-v_i)\right|\\
+ &\leq\lVert u-v\rVert_1.
+\end{align*}
+\end{proof}
+
+Combining \eqref{eq:envelope}, \eqref{eq:aug-feasible}, and the capacity-halving
+bound $1+x_i(u_t)\geq(1+u_{t,i})/2$ gives
+\begin{equation}\label{eq:service-height}
+ f_t(x(u_t))
+ \leq2\max_i\frac{r_{t,i}}{1+u_{t,i}}
+ \leq\frac83s_t.
+\end{equation}
+
+\subsection{Charging service to vertical movement}
+
+Let $a_{t-1}$ be the chaser height after the preceding reset, with $a_0=0$.
+Thus $a_{t-1}\leq2\delta_{t-1}$ for every $t\geq1$, including the initial
+case.  Let $V_t$ be the vertical movement while processing $E_t,R_t$.
+Endpoint distances imply
+\[
+ V_t\geq|s_t-a_{t-1}|+|s_t-b_t|
+     \geq2s_t-a_{t-1}-b_t.
+\]
+Using \eqref{eq:service-height}, $a_{t-1}\leq2\delta_{t-1}$, and
+$b_t\leq2\delta_t$, we obtain
+\[
+ f_t(x(u_t))
+ \leq\frac43V_t+\frac83(\delta_{t-1}+\delta_t).
+\]
+Because $\delta_0=0$ and $\sum_{t\geq1}\delta_t=1$, summing the error terms
+contributes at most $16/3$.  If $M$ denotes the chaser's complete movement,
+then
+\begin{equation}\label{eq:service-bridge}
+ \sum_t f_t(x(u_t))\leq\frac43M+\frac{16}{3}.
+\end{equation}
+The balanced projection is nonexpansive.  Write $x_t:=x(u_t)$ for $t\geq1$
+and identify the supplied integral $x_0$ with its real vector.  The first state
+can be at distance at most $2k$ from $x_0$, the diameter of the exact simplex.
+Hence
+\begin{equation}\label{eq:movement-bridge}
+ \lVert x_1-x_0\rVert_1+
+   \sum_{t=2}^{T}\lVert x_t-x_{t-1}\rVert_1\leq M+2k.
+\end{equation}
+
+\section{Comparison with the MoE optimum}
+
+Take any integral comparator path $y_1,\ldots,y_T$ and let
+$h_t=f_t(y_t)$.  At event time use the body point $(y_t,h_t)$, and at reset
+time use $(y_t,0)$.  The tangent-underestimator identity makes the event point
+feasible; the reset point is feasible as well.  Starting from zero, this lifted
+body path has movement
+\begin{align}
+ &k+\sum_{t=2}^{T}\lVert y_t-y_{t-1}\rVert_1+2\sum_{t=1}^{T}h_t
+ \notag\\
+ &\hspace{35mm}\leq k+2\,\operatorname{cost}(y_1,\ldots,y_T).
+ \label{eq:comparator}
+\end{align}
+Applying the positive-body theorem to an optimal MoE path gives
+\begin{equation}\label{eq:M}
+ M\leq\CPB(k+2\OPT).
+\end{equation}
+
+We now prove the upper bound.
+
+\begin{proof}[Proof of Theorem~\ref{thm:upper}]
+Apply Lazy Threshold Rounding to the fractional path constructed above.  Its
+two guarantees, together with \eqref{eq:service-bridge} and
+\eqref{eq:movement-bridge}, give
+\begin{align*}
+ \E[\ALG]
+ &\leq (M+2k)+3\left(\frac43M+\frac{16}{3}\right)\\
+ &=5M+2k+16\\
+ &\leq10\CPB\cdot\OPT\\
+ &\quad +(5\CPB+2)k+16,
+\end{align*}
+where the last step uses \eqref{eq:M}.  The additive term is independent of the
+horizon, and every step depends only on revealed requests and the one initial
+rounding seed.
+\end{proof}
+
+\section{Formal and executable verification}
+
+The formal development uses Lean 4.32.2 and Mathlib 4.32.2.  Its main
+upper-bound declaration is
+\begin{itemize}
+\item
+\texttt{DynamicMoeMain.dynamicMoe\_explicit\_constant\_upper\_of\_source\_theorems}.
+\end{itemize}
+It states the explicit factor $10\CPB$.  The proof files also contain the
+CPB-compatible body condition and the theorem telescoping HLX's per-step
+expected movement inequality.  Lean reports only the standard axioms
+\texttt{propext}, \texttt{Classical.choice}, and \texttt{Quot.sound} for every
+audited declaration.
+
+The source-relative boundary is explicit: the development does not reprove the
+complete CPB or HLX papers.  It formalizes their exact consequences as primitive
+premises and proves all new Dynamic MoE implications from them.  Pinned source
+archives and theorem-bearing members are checked by SHA-256 before replay.
+
+From the repository root, the complete replay is:
+\begin{verbatim}
+python3 scripts/bootstrap_dynamic_moe_sources.py
+python3 -m pytest tests/test_bootstrap_dynamic_moe_sources.py \
+  tests/test_dynamic_moe_positive_body_eval.py \
+  tests/test_dynamic_moe_positive_body_formal.py \
+  tests/test_dynamic_moe_semantics_formal.py \
+  tests/test_dynamic_moe_lower_bound_formal.py \
+  tests/test_dynamic_moe_formal_eval.py -q
+python3 -m evaluators.dynamic_moe_positive_body_eval \
+  --output output/dynamic-moe-serving/positive-body-reduction-control.json
+python3 -m evaluators.dynamic_moe_formal_eval \
+  --output output/dynamic-moe-serving/formal-reduction-audit.json
+\end{verbatim}
+The run passes 24 tests.  The canonical artifact hashes are
+\begin{align*}
+\text{exact control: }&
+\texttt{53c7ac33689b4cef22057fd1f9c040dab4e00a8aa13c5277b6a1b6e91e041a66},\\
+\text{formal packet: }&
+\texttt{adcb13dad31d6fc688982068396e9733cf3d6f6444285f015cd0e6e1c1fde3f4}.
+\end{align*}
+A fresh independent process reproduced both hashes exactly.  The formal packet
+normalizes machine-local path and architecture metadata.  The exact control
+includes exhaustive rational tests of the tangent envelope, reset service
+charge, exact-budget maps, movement normalization, and a small offline dynamic
+program, together with a deliberately corrupted movement negative control.
+
+\section{Scope and open directions}
+
+The theorem resolves the asymptotic randomized integral ratio under the
+fixed-sequence convention.  It does not determine the best numerical constant,
+the deterministic integral competitive ratio, or the ratio against an adaptive
+adversary.  The concrete integer tangent grid has $O(mk)$ covering rows per
+event.  The geometric grid noted after Lemma~\ref{lem:tangent} reduces this to
+$O(m\log(k+1))$ without changing the proof.  The reset schedule uses exact real
+numbers; replacing it with another positive summable schedule can be useful for
+an explicit bit-complexity implementation.
+
+\paragraph{Research-system disclosure.}
+Beyond, the research system operated by Nth Research Collective, materially
+assisted with literature retrieval, hypothesis generation, formalization,
+executable controls, and adversarial review.  Ian D'Ambrosio selected the
+target, directed the investigation, reconciled the evidence, verified the final
+claims, and accepts full responsibility for the manuscript.
+
+\begin{thebibliography}{9}
+
+\bibitem{BBLS2023}
+S.~Bhattacharya, N.~Buchbinder, R.~Levin, and T.~Saranurak,
+\newblock Chasing positive bodies,
+\newblock arXiv:2304.01889v2, 2023 (revised 2024).
+\newblock \url{https://arxiv.org/abs/2304.01889v2}.
+
+\bibitem{HLX2026}
+Z.~Huang, Q.~Lou, and T.~Xiao,
+\newblock Mixture-of-Experts Serving,
+\newblock arXiv:2607.17880v1, 2026.
+\newblock \url{https://arxiv.org/abs/2607.17880v1}.
+
+\end{thebibliography}
+
+\end{document}

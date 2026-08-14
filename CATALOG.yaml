@@ -30,3 +30,15 @@ projects:
     path: projects/f2-234-tensor-rank
     doi: 10.5281/zenodo.21895176
     verification: python3 projects/f2-234-tensor-rank/verification/verify_all.py
+  - id: dynamic-moe-serving
+    title: A Constant-Competitive Algorithm for Dynamic Mixture-of-Experts Serving
+    status: preprint
+    domains:
+      - data-structures-and-algorithms
+      - machine-learning
+      - online-algorithms
+    released_on: 2026-08-13
+    path: projects/dynamic-moe-serving
+    doi: 10.5281/zenodo.21918990
+    arxiv_status: submitted
+    verification: python3 projects/dynamic-moe-serving/verification/verify_all.py

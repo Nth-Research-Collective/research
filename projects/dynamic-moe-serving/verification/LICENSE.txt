@@ -1,0 +1,15 @@
+Creative Commons Attribution 4.0 International (CC BY 4.0)
+
+Copyright (c) 2026 Nth Research Collective.
+
+This archive, including the paper, verifier and evaluator code, formal proof
+sources, evidence files, and documentation authored for this result, is
+licensed under the Creative Commons Attribution 4.0 International License.
+You may share and adapt the material for any purpose with appropriate credit.
+The full license text is available at:
+
+https://creativecommons.org/licenses/by/4.0/legalcode
+
+Third-party source archives are not redistributed. They are downloaded at
+replay time from their pinned upstream locations and remain under their own
+licenses.

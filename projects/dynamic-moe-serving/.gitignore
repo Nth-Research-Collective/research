@@ -1,0 +1,5 @@
+verification/tmp/
+verification/formal/lean_project/.lake/
+**/__pycache__/
+*.pyc
+verification/formal/lean_project/LeanProject/beyond_axiom_audit_*.lean

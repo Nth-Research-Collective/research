@@ -1,0 +1,28 @@
+schema_version: 1
+id: dynamic-moe-serving
+title: A Constant-Competitive Algorithm for Dynamic Mixture-of-Experts Serving
+status: preprint
+released_on: 2026-08-13
+
+domains:
+  - data-structures-and-algorithms
+  - machine-learning
+  - online-algorithms
+
+arxiv:
+  primary_category: cs.DS
+  cross_list:
+    - cs.LG
+  identifier: null
+  submission_status: submitted
+
+publication:
+  title: A Constant-Competitive Algorithm for Dynamic Mixture-of-Experts Serving
+  version: 2.0.0
+  doi: 10.5281/zenodo.21918990
+  concept_doi: 10.5281/zenodo.21889164
+  resource_type: publication
+
+verification:
+  command: python3 projects/dynamic-moe-serving/verification/verify_all.py
+  arithmetic: exact-rational-and-lean
